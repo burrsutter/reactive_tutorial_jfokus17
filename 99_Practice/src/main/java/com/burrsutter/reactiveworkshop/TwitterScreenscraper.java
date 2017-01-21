@@ -1,5 +1,14 @@
 package com.burrsutter.reactiveworkshop;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.client.fluent.Content;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.util.EntityUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -8,43 +17,35 @@ import java.util.regex.Pattern;
 import java.text.NumberFormat;
 
 public class TwitterScreenscraper {
-    public static Integer getFollowers(String twitterHandle) {
+
+    private static final CloseableHttpClient HTTP_CLIENT = HttpClients.custom()
+            .setConnectionManager(new PoolingHttpClientConnectionManager())
+            .build();
+
+    private static final Pattern FOLLOWER_PATTERN = Pattern.compile("(?<count>[\\d,]+) Followers");
+
+    public static int getFollowers(String twitterHandle) {
         try {
-            final URL theURL = 
-              new URL("https://twitter.com/" + twitterHandle);
-            final BufferedReader reader = 
-              new BufferedReader(new InputStreamReader(theURL.openStream()));
-            StringBuffer response = new StringBuffer();
-            String inputLine;
+            HttpGet request = new HttpGet(String.format("https://twitter.com/%s", twitterHandle));
+            request.addHeader("Accept-Language", "en");
+            String response = EntityUtils.toString(HTTP_CLIENT.execute(request).getEntity());
 
-            // suck in the page
-		    while ((inputLine = reader.readLine()) != null) {
-			  response.append(inputLine);
-		    }
-		    reader.close();
-
-            Pattern pattern = Pattern.compile(".*?([\\d,]+ Followers).*");
-            Matcher m = pattern.matcher(response.toString());
+            Matcher m = FOLLOWER_PATTERN.matcher(response);
             if (m.find()) {
-                String groupResults = m.group(1);
-                String[] justTheNumber = groupResults.split(" ");
-                Number x = NumberFormat.getNumberInstance(java.util.Locale.US).parse(justTheNumber[0]);
-                int y = x.intValue();
-                return y;
+                return Integer.parseInt(m.group("count").replaceAll(",", ""));
             } else {
                 throw new RuntimeException("Not Found");
             }
-        } catch(Exception ex) {
-          throw new RuntimeException(ex);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        
     }
 
     public static void main(String[] args) {
         System.out.println("Finding Followers");
-        // System.out.println(getFollowers("burrsutter"));
-        // System.out.println(getFollowers("yanaga"));
-        // System.out.println(getFollowers("realDonaldTrump"));
+        System.out.println(getFollowers("burrsutter"));
+        System.out.println(getFollowers("yanaga"));
+        System.out.println(getFollowers("realDonaldTrump"));
         System.out.println(getFollowers("Dolph_Lundgren"));
         System.out.println(getFollowers("MickeNyqvist"));
     }
