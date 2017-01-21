@@ -6,7 +6,9 @@ import rx.Subscriber;
 public class Main {
     public static void main(String[] args) {
         Observable<SocialData> feed = MyObservableServer.getFeed();
+        feed.subscribe(System.out::println);
 
+/*
         feed.subscribe(new Subscriber<SocialData>() {
         @Override
         public void onStart() {
@@ -29,6 +31,6 @@ public class Main {
           System.out.println(socialData);
         }
     });
-
-    }
-}
+*/
+    }  // main
+} // Main
