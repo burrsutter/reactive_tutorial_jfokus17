@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.text.NumberFormat;
 
-public class HitTwitter {
+public class TwitterScreenscraper {
     public static Integer getFollowers(String twitterHandle) {
         try {
             final URL theURL = 

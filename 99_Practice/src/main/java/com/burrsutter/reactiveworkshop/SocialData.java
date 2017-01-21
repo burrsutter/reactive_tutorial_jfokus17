@@ -10,7 +10,7 @@ public class SocialData {
   }
 
   public static SocialData load(String id) {
-    return new SocialData(id, HitTwitter.getFollowers(id));
+    return new SocialData(id, TwitterScreenscraper.getFollowers(id));
   }
   @Override
   public String toString() {
