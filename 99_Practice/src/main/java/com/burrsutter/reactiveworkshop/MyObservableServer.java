@@ -5,7 +5,7 @@ import java.util.List;
 import rx.Observable;
 
 public class MyObservableServer {
-    static List<String> ids = Arrays.asList("burrsutter", "yanaga", "realDonaldTrump");
+    static List<String> ids = Arrays.asList("burrsutter", "yanaga", "realDonaldTrump","venkat_s");
 
     public static Observable<SocialData> getFeed() {
         return Observable.create(
