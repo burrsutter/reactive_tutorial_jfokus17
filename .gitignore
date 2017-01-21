@@ -3,4 +3,6 @@ goodbye
 .settings
 .classpath
 .project
+.idea
+*.iml
 target
