@@ -6,3 +6,4 @@ goodbye
 .idea
 *.iml
 target
+.vertx
