@@ -10,9 +10,11 @@ import io.vertx.ext.web.handler.BodyHandler;
  * Created by burr on 1/21/17.
  */
 public class ServerNoRx1 extends AbstractVerticle {
+    /*
     public static void main(String[] args) {
         Runner.runExample(ServerNoRx1.class);
     }
+    */
     @Override
     public void start() throws Exception {
         Router router = Router.router(vertx);
@@ -29,7 +31,7 @@ public class ServerNoRx1 extends AbstractVerticle {
 
     private void getRoot(RoutingContext routingContext) {
         System.out.println(routingContext.request().method());
-        routingContext.response().end("Wassup3");
+        routingContext.response().end("Wassup4");
     }
 
 
