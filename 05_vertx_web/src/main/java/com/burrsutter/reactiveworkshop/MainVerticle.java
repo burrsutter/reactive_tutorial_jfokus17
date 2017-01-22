@@ -15,15 +15,19 @@ public class MainVerticle extends AbstractVerticle {
         System.out.println("Hello2");
 
         Router router = Router.router(vertx);
+
         router.get("/hello/:name").handler(rc ->
                 rc.response().end("Hello " + rc.pathParam("name") + " " + new java.util.Date())
         );
+        router.get("/goodbye").handler(rc -> rc.response().end("goodbye"));
 
+        router.route().handler(StaticHandler.create());
 
-        router.get().handler(StaticHandler.create());
 
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(8080);
+
+        System.out.println("path" + new java.io.File("").getCanonicalPath());
   }
 }
