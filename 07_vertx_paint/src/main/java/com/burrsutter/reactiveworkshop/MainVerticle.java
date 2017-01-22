@@ -4,6 +4,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.ErrorHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.sockjs.BridgeEventType;
+import io.vertx.ext.web.handler.sockjs.BridgeOptions;
+import io.vertx.ext.web.handler.sockjs.PermittedOptions;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 
 /**
  * Created by burr on 1/22/17.
@@ -13,24 +17,33 @@ import io.vertx.ext.web.handler.StaticHandler;
 public class MainVerticle extends AbstractVerticle {
 
     public void start() throws Exception {
-        System.out.println("Hello2");
+        System.out.println("Finger Painting Up");
 
         Router router = Router.router(vertx);
+
+        String busAddress = "paintAddressX";
+        BridgeOptions options = new BridgeOptions()
+                .addOutboundPermitted(new PermittedOptions().setAddress(busAddress));
+        options.addInboundPermitted(new PermittedOptions().setAddress(busAddress));
+
+
+        router.route("/eventbus/*").handler(
+                SockJSHandler.create(vertx).bridge(options, event -> {
+                    if(event.type() == BridgeEventType.SOCKET_CREATED) {
+                        System.out.println("Socket Created");
+                    }
+                    event.complete(true);
+                })
+        );
 
         router.get("/hello/:name").handler(request ->
                 request.response().end("Hello " + request.pathParam("name") + " " + new java.util.Date())
         );
 
-        router.get("/goodbye").handler(request -> request.response().end("goodbye2"));
-
-        router.get("/blowup").handler(request -> {
-            throw new RuntimeException("Damn It");
-        });
-
 
         router.route().handler(StaticHandler.create());
         router.route().failureHandler(ErrorHandler.create());
-
+        
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(8080);

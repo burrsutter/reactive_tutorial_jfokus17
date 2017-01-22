@@ -1,0 +1,36 @@
+<html>
+  <head>
+      <title>Browser Vert.x Event Bus</title>
+      <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+      <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+      <script src="vertx-eventbus.js"></script>
+      
+  </head>
+  <body>
+     <style>
+       .stuffFromServer {
+         font-size: 20pt;
+       }
+     </style>
+
+     <H1>Wassup!</H1>
+      
+     <div class="stuffFromServer">Messages from Server</div>
+     <br>
+
+     <div id="dataFromServer" class="stuffFromServer"></div>
+
+     <script>
+       var eb = new EventBus("http://localhost:8080/eventbus");
+
+       eb.onopen = function () {
+         console.log("onopen");
+         eb.registerHandler("my-feed", function (err, msg) {         
+         $('#dataFromServer').prepend(msg.body + "</br>");
+       });
+      }
+
+     </script>
+
+  </body>
+</html>

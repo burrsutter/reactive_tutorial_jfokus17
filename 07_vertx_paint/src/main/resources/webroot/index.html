@@ -1,0 +1,204 @@
+<html>
+  <head>
+      <title>Browser Vert.x Event Bus</title>
+      <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+      <script src="sockjs-0.3.4.js"></script>
+      <script src="vertx-eventbus.js"></script>
+      <script src="debug.js"></script>
+  </head>
+  <body>
+     <style>
+       .colorButton {
+         font-size: 20pt;
+       }
+     </style>      
+
+  	 <div id="container">
+		   <canvas id="mainCanvas" width="400" height="400"
+		    style="border: 2px solid rgb(84,84,84); cursor: pointer; background-color: rgb(255,255,255); background-position: initial initial; background-repeat: initial initial;">
+		   Finger Painting
+	   </div>
+	   <div id="tools" class="colorButton">
+		  <a href="#" id="clearButton">Clear</a>
+		  <a href="#" id="blackButton">Black</a>
+		  <a href="#" id="redButton">Red</a>	
+		  <a href="#" id="pinkButton">Pink</a>
+		  <a href="#" id="greenButton">Green</a>
+		  <a href="#" id="yellowButton">Yellow</a>	
+	   </div>
+
+     <br/>
+
+     <script>
+       var eb = null;
+       var ebAddress = "paintAddressX";
+       var myUUID = null;
+       // the URL will change based on where the Vert.x server lives
+       // ideally I would have a better config option
+       // laziness
+       // var url = "http://192.168.1.5:8080/eventbus";
+	   // var url = "http://192.168.6.14:8080/eventbus";
+       var url = "http://localhost:8080/eventbus";
+
+       var strokeColor = "#000000";
+       var isDrawing = false;
+	     var ctx = mainCanvas.getContext('2d');
+	     ctx.lineWidth = 4;
+
+       $('#clearButton').click(function(e) {
+		     e.preventDefault();
+		     console.log("Clear Clicked");
+         ctx.beginPath();
+		     ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+         ctx.fillStyle = "#FFFFFF";
+         ctx.fillRect( 0, 0, mainCanvas.width, mainCanvas.height );
+         ctx.closePath();
+		     sendCanvas();
+	     }); // clearButton
+	
+       $('#blackButton').click(function(e) {
+		     e.preventDefault();
+		     console.log("Black Clicked");
+		     strokeColor = "#000000";
+	     });
+
+       $('#redButton').click(function(e) {
+		     e.preventDefault();
+		     console.log("Red Clicked");
+	       strokeColor = "#FE0001";
+	     });
+
+      $('#pinkButton').click(function(e) {
+		    e.preventDefault();
+		    console.log("Pink Clicked");
+		    strokeColor = "#FF0066";
+	    });
+
+      $('#greenButton').click(function(e) {
+		     e.preventDefault();
+         console.log("Green Clicked");
+		     strokeColor = "#00FF00";
+	    });
+
+      $('#yellowButton').click(function(e) {
+		    e.preventDefault();
+		    console.log("Yellow Clicked");
+		    strokeColor = "#FFFF00";
+	    });
+
+
+	function beginStroke(event) {
+		// debug(event);
+		isDrawing = true;
+		ctx.beginPath();
+		x = getX(event);
+		y = getY(event);
+		ctx.moveTo(x,y);
+		// console.log("BEGIN at " + x + " " + y );
+		event.preventDefault();
+	}
+  	function drawStroke(event) {
+		if(isDrawing) {
+			x = getX(event);
+			y = getY(event);
+  			ctx.lineTo(x,y);
+			ctx.strokeStyle = strokeColor;
+		    ctx.stroke();
+			// console.log("STROKE to " + x + " " + y);
+		}
+		event.preventDefault();
+	}
+
+	function endStroke(event) {
+		if(isDrawing) {
+	    	ctx.stroke();
+		    ctx.closePath();
+			// console.log("END");		
+		    isDrawing = false;
+		    sendCanvas();
+     	}
+		event.preventDefault();
+	}	
+	
+	function sendCanvas() {
+	    var msg = {
+			'id' : myUUID,
+			'data': mainCanvas.toDataURL("image/png")
+	    }
+	    msgAsString = JSON.stringify(msg);
+	    // console.log("CANVAS: " + msgAsString);
+	
+		  publish(ebAddress, msgAsString);		
+	}
+	
+	function getX(event) {
+		if(!event.targetTouches || typeof event.targetTouches[0] === "undefined") {
+			return event.layerX;
+		}
+		else {
+			return event.targetTouches[0].pageX;			
+		}
+	}
+
+	function getY(event) {
+		if(!event.targetTouches || typeof event.targetTouches[0] === "undefined") {
+			return event.layerY;
+		}
+		else {
+			return event.targetTouches[0].pageY;
+		}
+	}	
+
+  function publish(address,  message) {
+    if (eb) {
+      console.log("publishing");
+      eb.publish(address, message);	    
+    } else {
+      console.log("No EB?");
+    } // else
+  } // publish
+
+  // copied from vertx-eventbus.js
+  // I need just enough randomness to make different human's phones unique
+  function makeUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (a, b) {
+      return b = Math.random() * 16, (a == 'y' ? b & 3 | 8 : b | 0).toString(16);
+    });
+  }
+
+// -------------
+      function openEBConn() {
+        if (!eb) {
+          eb = new EventBus(url);
+          eb.onopen = function() {
+		        myUUID = makeUUID();
+            console.log("Connected " + myUUID);
+          }; // onopen
+
+          eb.onclose = function() {
+            console.log("Not connected");
+            eb = null;
+          };  //onclose
+        } // if
+      } // openEBConn()
+
+      $(document).ready(function() {
+	     	openEBConn();
+      
+		    mainCanvas.addEventListener("touchstart",beginStroke,false);
+		    mainCanvas.addEventListener("touchmove",drawStroke,false);
+		    mainCanvas.addEventListener("touchend",endStroke,false);
+		  
+		    mainCanvas.addEventListener("mousedown",beginStroke,false);
+		    mainCanvas.addEventListener("mousemove",drawStroke,false);
+		    mainCanvas.addEventListener("mouseup",endStroke,false);
+		  
+		    mainCanvas.addEventListener("mouseout",endStroke,false);	
+	        console.log("READY");
+	    
+      });
+
+     </script>
+
+  </body>
+</html>
