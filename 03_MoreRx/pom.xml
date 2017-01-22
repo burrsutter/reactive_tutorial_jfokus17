@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.burrsutter.reactiveworkshop</groupId>
-    <artifactId>morerx</artifactId>
+    <artifactId>more_rx</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>morerx</name>
+    <name>more_rx</name>
     <url></url>
     <properties>
     		
@@ -38,7 +38,7 @@
             </executions>
             <configuration>
               <!-- -->
-              <mainClass>com.burrsutter.reactiveworkshop.Hello04</mainClass>              
+              <mainClass>com.burrsutter.reactiveworkshop.ObservableFun9</mainClass>
               <!-- mvn exec:java -->
               <arguments>
               </arguments>

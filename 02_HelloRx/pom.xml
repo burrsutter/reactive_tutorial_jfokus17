@@ -38,7 +38,7 @@
             </executions>
             <configuration>
               <!-- -->
-              <mainClass>com.burrsutter.reactiveworkshop.Hello04</mainClass>              
+              <mainClass>com.burrsutter.reactiveworkshop.ObservableFun9</mainClass>
               <!-- mvn exec:java -->
               <arguments>
               </arguments>
