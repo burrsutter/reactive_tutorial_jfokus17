@@ -29,7 +29,7 @@ public class ServerNoRx1 extends AbstractVerticle {
 
     private void getRoot(RoutingContext routingContext) {
         System.out.println(routingContext.request().method());
-        routingContext.response().end("Wassup");
+        routingContext.response().end("Wassup3");
     }
 
 

@@ -9,6 +9,7 @@
   <properties>
     <vertx.version>3.3.3</vertx.version>
     <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
+      <vertx.verticle>com.burrsutter.reactiveworkshop.ServerNoRx1</vertx.verticle>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -64,7 +65,17 @@
               <goal>package</goal>
             </goals>
           </execution>
+          <execution>
+              <id>vmp-run</id>
+              <goals>
+                  <goal>initialize</goal>
+                  <goal>run</goal>
+              </goals>
+          </execution>
         </executions>
+          <configuration>
+            <redeploy>true</redeploy>
+          </configuration>
       </plugin>
     </plugins>
   </build>
