@@ -3,14 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.burrsutter.reactiveworkshop</groupId>
-  <artifactId>rx_vertx</artifactId>
+  <artifactId>vertx_web</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>rx_vertx</name>
+  <name>vertx_web</name>
   <properties>
-      <vertx.version>3.3.3</vertx.version>
-      <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
-      <vertx.verticle>com.burrsutter.reactiveworkshop.ServerNoRx1</vertx.verticle>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <vertx.version>3.3.3</vertx.version>
+    <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
+    <vertx.verticle>com.burrsutter.reactiveworkshop.MainVerticle</vertx.verticle>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -27,17 +27,10 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-rx-java</artifactId>
-
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-
     </dependency>
   </dependencies>
   <build>
