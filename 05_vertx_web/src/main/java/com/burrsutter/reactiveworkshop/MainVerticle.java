@@ -2,6 +2,7 @@ package com.burrsutter.reactiveworkshop;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.ErrorHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 
 /**
@@ -16,18 +17,24 @@ public class MainVerticle extends AbstractVerticle {
 
         Router router = Router.router(vertx);
 
-        router.get("/hello/:name").handler(rc ->
-                rc.response().end("Hello " + rc.pathParam("name") + " " + new java.util.Date())
+        router.get("/hello/:name").handler(request ->
+                request.response().end("Hello " + request.pathParam("name") + " " + new java.util.Date())
         );
-        router.get("/goodbye").handler(rc -> rc.response().end("goodbye"));
+
+        router.get("/goodbye").handler(request -> request.response().end("goodbye2"));
+
+        router.get("/blowup").handler(request -> {
+            throw new RuntimeException("Damn It");
+        });
+
 
         router.route().handler(StaticHandler.create());
-
-
+        router.route().failureHandler(ErrorHandler.create());
+        
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(8080);
 
-        System.out.println("path" + new java.io.File("").getCanonicalPath());
+
   }
 }
