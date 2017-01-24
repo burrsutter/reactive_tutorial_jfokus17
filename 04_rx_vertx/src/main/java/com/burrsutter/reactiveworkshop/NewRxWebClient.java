@@ -44,6 +44,7 @@ public class NewRxWebClient extends AbstractVerticle {
 
         // Send a request upon subscription of the Single
         single.subscribe(response -> {
+            System.out.println("And What are YOU: " + response.getClass().getName());
             System.out.println("Status: " + response.statusCode());
             System.out.println("Received: " + response.bodyAsString());
         }, error -> {
