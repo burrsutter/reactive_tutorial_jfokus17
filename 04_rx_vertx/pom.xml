@@ -8,37 +8,50 @@
   <name>rx_vertx</name>
   <properties>
       <vertx.version>3.3.3</vertx.version>
+      <!--
+       vertx-stack
+       requires a new profile in settings.xml
+       https://gist.github.com/vietj/16eba4e07dc5eaebaf30c716400a8201
+      -->
+      <vertx-stack.version>3.4.0-SNAPSHOT</vertx-stack.version>
       <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
-      <vertx.verticle>com.burrsutter.reactiveworkshop.ServerNoRx1</vertx.verticle>
+      <vertx.verticle>com.burrsutter.reactiveworkshop.NewRxWebClient</vertx.verticle>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.vertx</groupId>
+          <!--
         <artifactId>vertx-dependencies</artifactId>
         <version>${vertx.version}</version>
+        -->
+          <artifactId>vertx-stack</artifactId>
+          <version>${vertx-stack.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java</artifactId>
-
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-
     </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
+     </dependency>
+
   </dependencies>
   <build>
     <pluginManagement>
