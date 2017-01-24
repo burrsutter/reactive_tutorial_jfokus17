@@ -10,7 +10,14 @@ import java.util.List;
  */
 public class Client09 {
     public static void main(String[] args)  {
-        List<String> ids = Arrays.asList("burrsutter","yanaga", "Dolph_Lundgren");
+        List<String> ids = Arrays.asList(
+                "burrsutter",
+                "yanaga",
+                "rafabene",
+                "Dolph_Lundgren",
+                "MickeNyqvist",
+                "realDonaldTrump"
+        );
         Observable<SocialData> feed = Server09.getFeed(ids);
 
         feed.subscribe(
