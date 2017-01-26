@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.burrsutter.reactiveworkshop</groupId>
-    <artifactId>02</artifactId>
+    <artifactId>99-practice</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>tutorial01</name>
     <properties>
+        <java.main.class>com.burrsutter.reactiveworkshop.Main</java.main.class>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,11 +48,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- -->
-                    <mainClass>com.burrsutter.reactiveworkshop.Main</mainClass>
-                    <!-- mvn exec:java -->
-                    <arguments>
-                    </arguments>
+                    <mainClass>${java.main.class}</mainClass>
                 </configuration>
             </plugin>
         </plugins>
