@@ -13,7 +13,7 @@ import io.vertx.ext.web.handler.StaticHandler;
 public class MainVerticle extends AbstractVerticle {
 
     public void start() throws Exception {
-        System.out.println("Hello2");
+        System.out.println("Hello4");
 
         Router router = Router.router(vertx);
 

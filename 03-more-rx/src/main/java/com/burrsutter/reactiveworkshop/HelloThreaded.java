@@ -6,13 +6,13 @@ import rx.schedulers.Schedulers;
 /**
  * Created by burr on 1/23/17.
  */
-public class Hello {
+public class HelloThreaded {
         public static void main(String args[]) throws InterruptedException {
 
 
                 Observable<String> hello = Observable.just("Hallå","Hello","Bonjour");
 
-                System.out.println("* Hello Observable *");
+                System.out.println("* HelloThreaded Observable *");
 
                 hello
                         .subscribeOn(Schedulers.io())
