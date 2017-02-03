@@ -18,11 +18,6 @@ public class UsersVerticle extends AbstractVerticle{
         router.get("/users/:login").handler(this::getUser);
         router.get("/users/:login/followers").handler(this::getFollowers);
         vertx.createHttpServer().requestHandler(router::accept).listen(8081);
-        /*
-        vertx.createHttpServer().requestHandler(request -> {
-            request.response().end("Hello");
-        }).listen(8081);
-        */
     }
 
     private void getFollowers(RoutingContext routingContext) {

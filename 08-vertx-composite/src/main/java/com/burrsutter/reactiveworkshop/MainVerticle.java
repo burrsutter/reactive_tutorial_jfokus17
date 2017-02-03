@@ -8,7 +8,7 @@ import io.vertx.core.AbstractVerticle;
 public class MainVerticle extends AbstractVerticle{
     public void start() throws Exception {
         UsersVerticle users = new UsersVerticle();
-        // ClientVerticle client = new ClientVerticle();
+//        ClientVerticle client = new ClientVerticle();
         RxWebClient client = new RxWebClient();
         vertx.deployVerticle(users, ar -> {
             vertx.deployVerticle(client);

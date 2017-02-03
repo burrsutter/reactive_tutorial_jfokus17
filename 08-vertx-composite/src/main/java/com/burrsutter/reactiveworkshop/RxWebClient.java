@@ -1,5 +1,6 @@
 package com.burrsutter.reactiveworkshop;
 
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.AbstractVerticle;
@@ -8,6 +9,7 @@ import io.vertx.rxjava.ext.web.client.HttpResponse;
 import io.vertx.rxjava.ext.web.client.WebClient;
 import io.vertx.rxjava.ext.web.codec.BodyCodec;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by burr on 2/3/17.
@@ -23,6 +25,7 @@ public class RxWebClient extends AbstractVerticle {
 
         BodyCodec<JsonArray> jsonArrayBodyCodec = BodyCodec.create(buf -> new JsonArray(buf.toString()));
 
+/*
         createlocalhostRequest("/users", jsonArrayBodyCodec )
                 .rxSend()
                 .map(HttpResponse::body).flatMapObservable(Observable::from).cast(JsonObject.class)
@@ -33,9 +36,9 @@ public class RxWebClient extends AbstractVerticle {
                         }, error -> {
                             System.out.println("ERROR: " + error);
                         });
+*/
 
 
-/*
         createlocalhostRequest("/users",jsonArrayBodyCodec )
                 .rxSend()
                 .map(HttpResponse::body).flatMapObservable(Observable::from).cast(JsonObject.class)
@@ -44,11 +47,21 @@ public class RxWebClient extends AbstractVerticle {
                             .rxSend()
                             .map(HttpResponse::body);
 
-                    return userDetails.toObservable();
+                    Single<JsonArray> followers = createlocalhostRequest("/users/" + user.getString("login") + "/followers", jsonArrayBodyCodec)
+                            .rxSend()
+                            .map(HttpResponse::body);
+
+                    Single<JsonObject> followerName = createlocalhostRequest("/users/" + user.getString("login"), BodyCodec.jsonObject())
+                            .rxSend()
+                            .map(HttpResponse::body);
+
+                    followerName.subscribe(f -> {
+                        System.out.println("User: " + f.getString("name"));
+                    });
+                    return userDetails.zipWith(followers, (u, f) -> new JsonObject().put("user", u).put("followers", f)).toObservable();
 
                 }).subscribe(results -> System.out.println(results), System.err::println);
 
-*/
 /*
         createlocalhostRequest("/users",jsonArrayBodyCodec )
                 .rxSend()
