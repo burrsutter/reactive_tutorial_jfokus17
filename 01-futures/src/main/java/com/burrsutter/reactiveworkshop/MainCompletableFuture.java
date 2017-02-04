@@ -10,31 +10,31 @@ class MySupplier implements Supplier<String> {
     @Override
     public String get() {
         System.out.println("MySupplier");
-        return "SupplierStuff";
+        return "Item1";
     }
 } // MySupplier
 
 class MyFunction1 implements Function<String, String> {
     @Override
     public String apply(String s) {
-       System.out.println("MyFunction1");
-       return s + " Item1";
+//       System.out.println("MyFunction1");
+       return s + " Item2";
     }
 } // MyFunction1
 
 class MyFunction2 implements Function<String, String> {
     @Override
     public String apply(String s) {
-       System.out.println("MyFunction2");
-       return s + " Item2";
+//       System.out.println("MyFunction2");
+       return s + " Item3";
     }
 } // MyFunction2
 
 class MyFunction3 implements Function<String, String> {
     @Override
     public String apply(String s) {
-       System.out.println("MyFunction3");
-       return s + " Item3";
+//       System.out.println("MyFunction3");
+       return s + " Item4";
     }
 } // MyFunction2
 
@@ -48,8 +48,8 @@ public class MainCompletableFuture {
       
       CompletableFuture<String> cf3 = cf2.thenApply(new MyFunction2());
 
-      CompletableFuture<String> cf4 = cf3.thenApply(new MyFunction3());
+      // CompletableFuture<String> cf4 = cf3.thenApply(new MyFunction3());
 
-      System.out.println("cf4: " + cf4.get());
+      System.out.println("cf3: " + cf3.get());
   }
 }

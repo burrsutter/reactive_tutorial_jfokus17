@@ -37,7 +37,7 @@ public class BWarmups {
         System.out.println("* New school *");
         greetings.stream()
               .map(String::toUpperCase)
-              .peek(item -> System.out.println(item))
+              //.peek(item -> System.out.println(item))
               .filter(symbol -> symbol.startsWith("B"))
               .forEach(System.out::println);
 
