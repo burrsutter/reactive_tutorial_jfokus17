@@ -7,9 +7,10 @@ import rx.Observable;
  */
 public class ObservableFun1 {
     public static void main (String[] args) {
-        Observable.just("1234567890")
-                .map(s -> s.substring(5))
+        Observable.just("12345")
+                .map(s -> s.substring(3))
                 .map(i -> new Integer(i))
+                .map(a -> a * 2)
                 .subscribe(i -> System.out.println(i));
     }
 }

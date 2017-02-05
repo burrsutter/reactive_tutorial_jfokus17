@@ -9,9 +9,15 @@ import rx.Subscriber;
 public class ObservableFun8 {
 
     public static void main (String[] args) {
-        Observable.just("Hallå","Hello","Hey Ya\'ll","Bonjour")
+        Observable.just("Hallå","Hello","Hey Ya\'ll","Bonjour","Namaste")
                 .map(ObservableFun8::transformIt)
-                .onErrorReturn(error -> "Aloha")
+                // .onErrorReturn(error -> "Aloha")
+
+                .onErrorResumeNext(error -> {
+                    System.out.println("Error: " + error);
+                    return Observable.just("Aloha","Bonjour", "Namaste");
+                })
+
                 .subscribe(
                         new Subscriber<String>() {
                             @Override
@@ -33,7 +39,7 @@ public class ObservableFun8 {
     }
     public static String transformIt(String s) {
         if (s.contains("Ya\'ll")) {
-            throw new RuntimeException("No rednecks allowed ");
+            throw new RuntimeException("Ya\'ll Ain\'t a word");
         }
         return "X" + s;
     }

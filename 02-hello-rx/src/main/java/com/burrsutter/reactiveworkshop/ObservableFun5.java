@@ -28,7 +28,7 @@ public class ObservableFun5 {
         };
 
         System.out.println("Nothing happens until subscribe is called");
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         source.subscribe(consumer);
 
 

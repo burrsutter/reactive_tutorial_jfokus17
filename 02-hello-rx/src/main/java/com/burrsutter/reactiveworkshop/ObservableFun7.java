@@ -41,7 +41,7 @@ public class ObservableFun7 {
     }
     public static String transformIt(String s) {
         if (s.contains("\'")) {
-            throw new RuntimeException("No rednecks allowed ");
+            throw new RuntimeException("Ya\'ll Ain\'t a word");
         }
         return "X" + s;
     }
