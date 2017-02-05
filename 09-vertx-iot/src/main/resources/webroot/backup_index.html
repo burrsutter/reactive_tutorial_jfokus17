@@ -1,0 +1,95 @@
+<html>
+<head>
+  <title>Temp Sensors via MQTT Vert.x</title>
+  <link href='lib/metricsgraphics.css' rel='stylesheet' type='text/css'>
+  <script src="./browserMqtt.js"></script>
+  <script src='lib/jquery.min.js'></script>
+  <script src='lib/sockjs.min.js'></script>
+  <script src='lib/vertx-eventbus.js'></script>
+  <script src='lib/d3.min.js'></script>
+  <script src="lib/metricsgraphics.js"></script>
+
+</head>
+<body>
+<H3>MQTT via Vert.x Metric Graphics using D3.js</H3>
+
+
+<div id="ti_cc2650_graph">CC2650 Graph</div>
+<hr/>
+<div id="lbb_sense_graph">LBB Sense Graph</div>
+
+<script>
+    
+    var allsensors = [];
+    var ti_cc2650 = []; // readings for TI Sensor Tag cc2650
+    var lbb_sense = []; // readings for Light Blue Bean - Sense
+    var minutes = .5;
+
+    var options = {
+        title: "Temperature",
+        description: "Time-series of Temperatures",
+        data: ti_cc2650,
+        width: 300,
+        height: 150,
+        target: '#ti_cc2650_graph',
+        x_accessor: 'date',
+        y_accessor: 'temp'
+    }
+    
+    var client_ti_cc2650 = mqtt.connect("ws://admin:admin@localhost:1884");
+    var client_lbb_sense = mqtt.connect("ws://admin:admin@localhost:1884");
+
+    function reviewSensors(sensors) {
+        for (var i = 0, len = sensors.length; i < len; i++) {
+            console.log(sensors[i]);
+        } // for 
+    } // function reviewSensors
+
+
+    client_ti_cc2650.subscribe("temp_ti_cc2650");
+    client_lbb_sense.subscribe("temp_lbb_sense");
+    
+        
+   client_ti_cc2650.on("message", function(topic, payload) {
+        var sensordata = JSON.parse(payload.toString()); 
+        if (ti_cc2650.length > 60 * minutes) {
+            ti_cc2650.shift(); // eat an older sensor reading
+        }
+        ti_cc2650.push({
+            temp: parseInt(sensordata.temp), 
+            date: new Date(sensordata.time)
+        });
+
+		options.title = "";
+        options.data = ti_cc2650;
+        options.target ="#ti_cc2650_graph";
+
+        var g = MG.data_graphic(options);
+
+    }); //  client.on("message", function(topic, payload) {
+
+    client_lbb_sense.on("message", function(topic, payload) {
+        var sensordata = JSON.parse(payload.toString()); 
+        // console.log("lbb_sense: " + sensordata);
+        if (lbb_sense.length > 60 * minutes) {
+            lbb_sense.shift(); // eat an older sensor reading
+        }
+        // console.log(sensordata.temp);
+        // console.log(sensordata.time);
+
+        lbb_sense.push({
+            temp: parseInt(sensordata.temp), 
+            date: new Date(sensordata.time)
+        });
+        reviewSensors(lbb_sense);
+        options.title = "";
+        options.data = lbb_sense;
+        options.target = "#lbb_sense_graph";
+
+        var g = MG.data_graphic(options);
+
+    }); //  client.on("message", function(topic, payload) {
+    
+ </script>  
+</body>
+</html>

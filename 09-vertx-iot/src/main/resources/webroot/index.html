@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temp Sensors via MQTT Vert.x</title>
+    <link href='lib/metricsgraphics.css' rel='stylesheet' type='text/css'>
+
+    <script src='lib/jquery.min.js'></script>
+    <script src='lib/sockjs.min.js'></script>
+    <script src='lib/vertx-eventbus.js'></script>
+    <script src='lib/d3.min.js'></script>
+    <script src="lib/metricsgraphics.js"></script>
+
+</head>
+<body>
+<div id="dataFromServer" class="stuffFromServer"></div>
+
+<hr/>
+<div id="ti_cc2650_graph">CC2650 Graph</div>
+<hr/>
+<div id="ti_cc2541_graph">CC2541 Graph</div>
+<hr/>
+<div id="lbb_sense_graph">LBB Sense Graph</div>
+
+
+
+ <script>
+       var eb = new EventBus("http://localhost:8080/eventbus");
+
+        var allsensors = [];
+        var ti_cc2650 = []; // readings for TI Sensor Tag cc2650
+        var ti_cc2541 = []; // readings for TI Sensor Tag cc2541
+        var lbb_sense = []; // readings for Light Blue Bean - Sense
+        var minutes = .5;
+
+        var ti2650options = {
+            title: "Temperature",
+            description: "Time-series of Temperatures",
+            data: ti_cc2650,
+            width: 300,
+            height: 150,
+            target: '#ti_cc2650_graph',
+            x_accessor: 'date',
+            y_accessor: 'temp'
+        }
+
+        var ti2541options = {
+            title: "Temperature",
+            description: "Time-series of Temperatures",
+            data: ti_cc2541,
+            width: 300,
+            height: 150,
+            target: '#ti_cc2541_graph',
+            x_accessor: 'date',
+            y_accessor: 'temp'
+        }
+
+        var lbboptions = {
+            title: "Temperature",
+            description: "Time-series of Temperatures",
+            data: lbb_sense,
+            width: 300,
+            height: 150,
+            target: '#lbb_sense_graph',
+            x_accessor: 'date',
+            y_accessor: 'temp'
+        }
+
+
+       eb.onopen = function () {
+
+         console.log("onopen");
+
+         eb.registerHandler("ti_cc2650", function (err, msg) {
+              // console.log(msg.body);
+              // $('#dataFromServer').prepend(msg.body + "</br>");
+
+              var sensordata = JSON.parse(msg.body);
+              // console.log("sensordata:" + sensordata);
+              // console.log("temp:" + sensordata.temp + ":" + sensordata.time);
+
+              if (ti_cc2650.length > 60 * minutes) {
+                  ti_cc2650.shift(); // eat an older sensor reading
+              }
+
+              ti_cc2650.push({
+                temp: parseInt(sensordata.temp),
+                date: new Date(sensordata.time)
+              });
+
+		      ti2650options.title = "";
+              ti2650options.data = ti_cc2650;
+              ti2650options.target ="#ti_cc2650_graph";
+
+              var g = MG.data_graphic(ti2650options);
+         }); // ti_cc2650
+
+         eb.registerHandler("ti_cc2541", function (err, msg) {
+              // console.log("ti_cc2541");
+              var sensordata = JSON.parse(msg.body);
+              // console.log("sensordata:" + sensordata);
+              // console.log("temp:" + sensordata.temp + ":" + sensordata.time);
+
+              if (ti_cc2541.length > 60 * minutes) {
+                  ti_cc2541.shift(); // eat an older sensor reading
+              }
+
+              ti_cc2541.push({
+                temp: parseInt(sensordata.temp),
+                date: new Date(sensordata.time)
+              });
+
+		      ti2541options.title = "";
+              ti2541options.data = ti_cc2541;
+              ti2541options.target ="#ti_cc2541_graph";
+
+              var g = MG.data_graphic(ti2541options);
+
+
+         });  // ti_cc2541
+
+         eb.registerHandler("lbb_sense", function (err, msg) {
+              // console.log(msg.body);
+              // $('#dataFromServer').prepend(msg.body + "</br>");
+
+              var sensordata = JSON.parse(msg.body);
+              // console.log("sensordata:" + sensordata);
+              // console.log("temp:" + sensordata.temp + ":" + sensordata.time);
+
+              if (lbb_sense.length > 60 * minutes) {
+                  lbb_sense.shift(); // eat an older sensor reading
+              }
+
+              lbb_sense.push({
+                temp: parseInt(sensordata.temp),
+                date: new Date(sensordata.time)
+              });
+
+		      lbboptions.title = "";
+              lbboptions.data = lbb_sense;
+              lbboptions.target ="#lbb_sense_graph";
+
+              var g = MG.data_graphic(lbboptions);
+         });
+
+
+      }  // eb.onopen
+
+  </script>
+
+
+</body>
+</html>
