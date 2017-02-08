@@ -11,6 +11,6 @@ public class ObservableFun1 {
                 .map(s -> s.substring(3))
                 .map(i -> new Integer(i))
                 .map(a -> a * 2)
-                .subscribe(i -> System.out.println(i));
+                .subscribe(x -> System.out.println(x));
     }
 }

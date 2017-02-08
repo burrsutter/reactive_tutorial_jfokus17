@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Client06 {
     public static void main(String[] args) throws InterruptedException {
-        List<String> ids = Arrays.asList("asdf","fdsa", "qwer");
+        List<String> ids = Arrays.asList("burrsutter","yanaga", "Dolph_Lundgren");
         Observable<SocialData> feed = Server06.getFeed(ids);
 
         feed.subscribe(

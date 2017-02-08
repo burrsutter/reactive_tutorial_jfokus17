@@ -17,6 +17,7 @@ public class Client09 {
                 "Dolph_Lundgren",
                 "MickeNyqvist",
                 "realDonaldTrump"
+
         );
         Observable<SocialData> feed = Server09.getFeed(ids);
 

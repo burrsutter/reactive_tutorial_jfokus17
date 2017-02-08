@@ -15,7 +15,7 @@
         -->
         <vertx-stack.version>3.4.0-SNAPSHOT</vertx-stack.version>
         <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
-        <vertx.verticle>com.burrsutter.reactiveworkshop.ObservableReadFile</vertx.verticle>
+        <vertx.verticle>com.burrsutter.reactiveworkshop.NewRxWebClient</vertx.verticle>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

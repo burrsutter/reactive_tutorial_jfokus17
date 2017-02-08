@@ -15,7 +15,8 @@ public class HelloThreaded {
                 System.out.println("* HelloThreaded Observable *");
 
                 hello
-                        .subscribeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.computation())
+
                         .map(String::length)
                         .subscribe( l -> {
                     System.out.println("received: " + l);

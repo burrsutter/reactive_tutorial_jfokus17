@@ -21,6 +21,5 @@ public class Server06 {
                 subscriber.onNext(SocialData.load(id));
             }
         }
-
     }  // processRequest
 }

@@ -46,7 +46,7 @@ public class MainVerticle extends AbstractVerticle {
         
         vertx.createHttpServer()
                 .requestHandler(router::accept)
-                .listen(8080);
+                .listen(80);
 
 
   }

@@ -8,10 +8,15 @@ import io.vertx.core.AbstractVerticle;
 public class MainVerticle extends AbstractVerticle{
     public void start() throws Exception {
         UsersVerticle users = new UsersVerticle();
-//        ClientVerticle client = new ClientVerticle();
-        RxWebClient client = new RxWebClient();
-        vertx.deployVerticle(users, ar -> {
-            vertx.deployVerticle(client);
+        FollowersVerticle followers = new FollowersVerticle();
+        WebVerticle web = new WebVerticle();
+        // WebVerticleGitHub web = new WebVerticleGitHub();
+        // ClientVerticle client = new ClientVerticle();
+        // RxWebClient client = new RxWebClient();
+        vertx.deployVerticle(users, webresult -> {
+            vertx.deployVerticle(followers, userresult -> {
+                vertx.deployVerticle(web);
+            });
         });
     }
 }
