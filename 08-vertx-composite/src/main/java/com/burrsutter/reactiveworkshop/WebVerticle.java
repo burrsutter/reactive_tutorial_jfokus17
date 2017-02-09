@@ -43,7 +43,7 @@ public class WebVerticle extends AbstractVerticle {
         rxWebClient.get(8081, "localhost", "/users")
                 .putHeader("Accept", "application/json")
                 .putHeader("User-Agent", "Vert.x Web Client")
-
+                
                 .as(BodyCodec.jsonArray())
 
                 .rxSend()
@@ -69,16 +69,16 @@ public class WebVerticle extends AbstractVerticle {
                                 .rxSend()
                                 .map(HttpResponse::body);
 
+
                     return userDetails.zipWith(followers,
                             (u, f) -> new JsonObject().put("user", u).put("followers", f))
-
                             .toObservable();  // from Single to Observable
                 })
+                .collect(JsonArray::new, JsonArray::add)
                 .subscribe(
                         aUserFollowers -> response.write(aUserFollowers.encodePrettily()),
                         routingContext::fail,
                         response::end);
-
 
     }
 
