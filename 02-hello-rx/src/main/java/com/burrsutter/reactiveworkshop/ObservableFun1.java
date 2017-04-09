@@ -7,10 +7,12 @@ import rx.Observable;
  */
 public class ObservableFun1 {
     public static void main (String[] args) {
+        // remember, nothing happens until subscribe
+        // each .map applies a function
         Observable.just("12345")
-                .map(s -> s.substring(3))
-                .map(i -> new Integer(i))
-                .map(a -> a * 2)
-                .subscribe(x -> System.out.println(x));
+                .map(s -> s.substring(3)) // "45"
+                .map(i -> new Integer(i)) // 45
+                .map(a -> a * 2) // 90
+                .subscribe(x -> System.out.println(x)); // 90
     }
 }

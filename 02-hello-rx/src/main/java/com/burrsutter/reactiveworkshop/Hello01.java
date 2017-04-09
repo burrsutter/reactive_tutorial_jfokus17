@@ -10,9 +10,10 @@ public class Hello01 {
         System.out.println(Hello01.class.getSimpleName());
 
         Observable<String> hello = Observable.just("Hallå");
-
+        // nothing happens until subscribe is called
         System.out.println("* Hello Observable *");
-
+        
+        // :: Java 8 method reference
         hello.subscribe(System.out::println);
 
     }
