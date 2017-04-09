@@ -18,7 +18,7 @@ public class MainVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
 
         router.get("/hello/:name").handler(request ->
-                request.response().end("Hej again " + request.pathParam("name") + " " + new java.util.Date())
+                request.response().end("Hey again " + request.pathParam("name") + " " + new java.util.Date())
         );
 
         router.get("/goodbye").handler(request -> request.response().end("goodbye2"));
