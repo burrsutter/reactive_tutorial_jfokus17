@@ -23,6 +23,7 @@ public class Server08 {
             }
             break;
         }
+        subscriber.onCompleted();
 
     }  // processRequest
     public static void sleep(int ms) {

@@ -16,13 +16,13 @@ public class Server01 {
 
     private static void processRequest(Subscriber<? super String> subscriber, List<String> ids) {
         System.out.println("processing");
-
+        // just a 2 second delay before the stream begins
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+       // infinite loop on purpose
         while(true) {
             for (String id: ids) {
                 subscriber.onNext("OK: " + id);

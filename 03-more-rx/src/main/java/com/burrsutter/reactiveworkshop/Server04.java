@@ -17,6 +17,8 @@ public class Server04 {
         System.out.println("processing");
 
         int count = 0;
+        
+        // if nobody is subscribing, stop broadcasting
         while(!subscriber.isUnsubscribed()) {
             count++;
             for (String id: ids) {

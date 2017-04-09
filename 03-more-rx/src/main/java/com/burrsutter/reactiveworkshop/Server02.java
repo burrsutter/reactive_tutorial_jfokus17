@@ -27,7 +27,9 @@ public class Server02 {
                 subscriber.onNext("OK: " + id);
             }
         }
+        // all calls to onNext feed the stream
         subscriber.onNext("More Stuff");
+        // until onCompleted is called, closing the stream
         subscriber.onCompleted();
     }  // processRequest
 }

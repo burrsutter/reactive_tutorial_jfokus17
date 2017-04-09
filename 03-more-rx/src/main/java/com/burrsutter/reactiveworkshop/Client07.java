@@ -11,8 +11,24 @@ import java.util.List;
  */
 public class Client07 {
     public static void main(String[] args) throws InterruptedException {
-        List<String> ids = Arrays.asList("asdf","fdsa", "qwer");
+        // List<String> ids = Arrays.asList("asdf","fdsa", "qwer");
+        List<String> ids = Arrays.asList("asdf","fdsa", "qwer", "thisdoesnotreallyexist4321");
         Observable<SocialData> feed = Server07.getFeed(ids);
+        // if disconnected from the internet, this defaults to 99 Followers
+        // Observable<SocialData> feed = Server07Backup.getFeed(ids);
+
+        /* results:
+        processing
+        asdf has 6684 followers
+        fdsa has 58 followers
+        qwer has 91 followers
+        Danger be Damned! Go back for more
+        processing
+        asdf has 6684 followers
+        fdsa has 58 followers
+        qwer has 91 followers
+        Danger Will Robinson java.lang.RuntimeException: java.lang.RuntimeException: Not Found
+        */
 
         feed.onErrorResumeNext(throwable -> handleFallback(throwable, ids))
                 .subscribe(
