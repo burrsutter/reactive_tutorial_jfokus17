@@ -1,8 +1,11 @@
+# Purpose
+To demonstrate the Vert.x Event Bus using several local JVMs at part of a cluster.  Also extends the Event Bus to the browser in MyWebServer.java
+
 Requires the 'vertx' command line tool
 http://vertx.io/download/
 Add "bin" your PATH
 Tip: On Mac OSX, add a file to /etc/paths.d called "vertx" and containing
-/Users/burr/tools/vert.x-3.3.3/bin
+"/Users/burr/tools/vert.x-3.3.3/bin"
 or wherever you unzipped your Vert.x distribution
 
 Terminal Window 1:
@@ -24,10 +27,4 @@ jps
 find the process id of a Launcher
 kill -9 pid
 
-and one of the remaining JVMs/nodes will start 
-running the killed Verticle
-
-
-
-
-
+and one of the remaining JVMs/nodes will start running the killed Verticle
