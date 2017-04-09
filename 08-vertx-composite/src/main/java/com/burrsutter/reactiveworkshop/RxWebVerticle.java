@@ -6,23 +6,22 @@ import io.vertx.rxjava.core.AbstractVerticle;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.RoutingContext;
+import io.vertx.rxjava.ext.web.client.HttpRequest;
 import io.vertx.rxjava.ext.web.client.HttpResponse;
 import io.vertx.rxjava.ext.web.client.WebClient;
 import io.vertx.rxjava.ext.web.codec.BodyCodec;
 import rx.Observable;
 import rx.Single;
-import io.vertx.core.http.HttpClientOptions;
 
 /**
  * Created by burr on 2/7/17.
  */
-public class WebVerticleGitHub extends AbstractVerticle {
+public class RxWebVerticle extends AbstractVerticle {
     WebClient rxWebClient;
-
+    // BodyCodec<JsonArray> jsonArrayBodyCodec;
 
     public void start() throws Exception {
         rxWebClient = WebClient.create(vertx);
-        rxWebClient = WebClient.wrap(vertx.createHttpClient(new HttpClientOptions().setSsl(true)));
 
         Router router = Router.router(vertx);
         router.get("/").handler(this::getStuff);
@@ -41,43 +40,47 @@ public class WebVerticleGitHub extends AbstractVerticle {
             and fetch user's followers on localhost:8082 /followers/:loginid
 
         */
-        rxWebClient.get(443, "api.github.com", "/users")
-                .putHeader("Accept", "application/vnd.github.v3+json")
+        rxWebClient.get(8081, "localhost", "/users")
+                .putHeader("Accept", "application/json")
                 .putHeader("User-Agent", "Vert.x Web Client")
-                .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
+                
                 .as(BodyCodec.jsonArray())
+
                 .rxSend()
+
                 .map(HttpResponse::body).flatMapObservable(Observable::from).cast(JsonObject.class)
-                .take(1)
+
                 .flatMap(user -> {
+
                     System.out.println("**" + user.getString("login") + "**");
                     Single<JsonObject> userDetails =
-                            rxWebClient.get(443, "api.github.com", "/users/" +  user.getString("login") )
-                                    .putHeader("Accept", "application/vnd.github.v3+json")
+                            rxWebClient.get(8081, "localhost", "/users/" +  user.getString("login") )
+                                    .putHeader("Accept", "application/json")
                                     .putHeader("User-Agent", "Vert.x Web Client")
-                                    .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
                                     .as(BodyCodec.jsonObject())
                                     .rxSend()
                                     .map(HttpResponse::body);
 
                     Single<JsonArray> followers =
-                            rxWebClient.get(443, "api.github.com", "/users/" +  user.getString("login") + "/followers")
-                                .putHeader("Accept", "application/vnd.github.v3+json")
+                            rxWebClient.get(8082, "localhost", "/followers/" +  user.getString("login") )
+                                .putHeader("Accept", "application/json")
                                 .putHeader("User-Agent", "Vert.x Web Client")
-                                .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
                                 .as(BodyCodec.jsonArray())
                                 .rxSend()
                                 .map(HttpResponse::body);
 
-                    return userDetails.zipWith(followers, (u, f) -> new JsonObject().put("user", u).put("followers", f)).toObservable();
+
+                    return userDetails.zipWith(followers,
+                            (u, f) -> new JsonObject().put("user", u).put("followers", f))
+                            .toObservable();  // from Single to Observable
                 })
+                .collect(JsonArray::new, JsonArray::add)
                 .subscribe(
                         aUserFollowers -> response.write(aUserFollowers.encodePrettily()),
                         routingContext::fail,
                         response::end);
 
-
     }
-// anVua3N0dWZmMQ==
+
 
 }
