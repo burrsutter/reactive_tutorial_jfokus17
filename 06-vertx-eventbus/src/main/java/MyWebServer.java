@@ -27,7 +27,7 @@ public class MyWebServer extends AbstractVerticle {
 
     vertx.createHttpServer()        
         .requestHandler(router::accept)
-        .listen(8080);
+        .listen(80);
 
     System.out.println("Everyting is non-blocking Async :-)");
 

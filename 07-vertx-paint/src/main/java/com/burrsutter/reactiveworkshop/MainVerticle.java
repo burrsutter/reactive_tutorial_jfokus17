@@ -46,7 +46,7 @@ public class MainVerticle extends AbstractVerticle {
         
         vertx.createHttpServer()
                 .requestHandler(router::accept)
-                .listen(8080); // Using 80 on the audience-facing server
+                .listen(80); // Using 80 on the audience-facing server
 
 
   }

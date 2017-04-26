@@ -44,7 +44,7 @@ public class RxWebVerticleGitHub extends AbstractVerticle {
         rxWebClient.get(443, "api.github.com", "/users")
                 .putHeader("Accept", "application/vnd.github.v3+json")
                 .putHeader("User-Agent", "Vert.x Web Client")
-                .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
+                // .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
                 .as(BodyCodec.jsonArray())
                 .rxSend()
                 .map(HttpResponse::body).flatMapObservable(Observable::from).cast(JsonObject.class)
@@ -55,7 +55,7 @@ public class RxWebVerticleGitHub extends AbstractVerticle {
                             rxWebClient.get(443, "api.github.com", "/users/" +  user.getString("login") )
                                     .putHeader("Accept", "application/vnd.github.v3+json")
                                     .putHeader("User-Agent", "Vert.x Web Client")
-                                    .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
+                                    // .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
                                     .as(BodyCodec.jsonObject())
                                     .rxSend()
                                     .map(HttpResponse::body);
@@ -64,7 +64,7 @@ public class RxWebVerticleGitHub extends AbstractVerticle {
                             rxWebClient.get(443, "api.github.com", "/users/" +  user.getString("login") + "/followers")
                                 .putHeader("Accept", "application/vnd.github.v3+json")
                                 .putHeader("User-Agent", "Vert.x Web Client")
-                                .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
+                                // .putHeader("Authorization", "Basic YXBpZXhwbG9yZXI1Om15cGFzc3dvcmQ=") // replace with your user:password
                                 .as(BodyCodec.jsonArray())
                                 .rxSend()
                                 .map(HttpResponse::body);

@@ -6,7 +6,7 @@
   <artifactId>08-vertx-composite</artifactId>
   <version>1.0</version>
   <properties>
-    <vertx.version>3.4.0-SNAPSHOT</vertx.version>
+    <vertx.version>3.4.0</vertx.version>
     <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
     <vertx.verticle>com.burrsutter.reactiveworkshop.MainVerticle</vertx.verticle>
     <maven.compiler.source>1.8</maven.compiler.source>

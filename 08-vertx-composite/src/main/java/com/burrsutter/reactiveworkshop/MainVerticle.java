@@ -9,8 +9,8 @@ public class MainVerticle extends AbstractVerticle{
     public void start() throws Exception {
         UsersVerticle users = new UsersVerticle();
         FollowersVerticle followers = new FollowersVerticle();
-        RxWebVerticle web = new RxWebVerticle();
-        // RxWebVerticleGitHub web = new RxWebVerticleGitHub();
+        // RxWebVerticle web = new RxWebVerticle();
+        RxWebVerticleGitHub web = new RxWebVerticleGitHub();
         // ClientVerticle client = new ClientVerticle();
         // RxWebClient client = new RxWebClient();
         vertx.deployVerticle(users, webresult -> {

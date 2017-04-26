@@ -6,7 +6,7 @@
     <artifactId>09-vertx-iot</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <vertx.version>3.4.0-SNAPSHOT</vertx.version>
+        <vertx.version>3.4.0</vertx.version>
         <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
         <vertx.verticle>com.burrsutter.reactiveworkshop.MainVerticle</vertx.verticle>
 

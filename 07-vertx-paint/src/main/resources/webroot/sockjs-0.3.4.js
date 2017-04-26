@@ -2376,4 +2376,4 @@ if (typeof define === 'function' && define.amd) {
 //     [*] End of lib/index.js
 
 // [*] End of lib/all.js
-SockJS.getUtils().log('*** SockJS CDN is being retired on Dec 1st *** Please transition to a public CDN. See https://github.com/sockjs/sockjs-client/issues/198 for more information.');
+// SockJS.getUtils().log('*** SockJS CDN is being retired on Dec 1st *** Please transition to a public CDN. See https://github.com/sockjs/sockjs-client/issues/198 for more information.');
