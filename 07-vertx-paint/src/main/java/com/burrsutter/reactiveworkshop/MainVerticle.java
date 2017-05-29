@@ -36,11 +36,6 @@ public class MainVerticle extends AbstractVerticle {
                 })
         );
 
-        router.get("/hello/:name").handler(request ->
-                request.response().end("Hello " + request.pathParam("name") + " " + new java.util.Date())
-        );
-
-
         router.route().handler(StaticHandler.create());
         router.route().failureHandler(ErrorHandler.create());
         

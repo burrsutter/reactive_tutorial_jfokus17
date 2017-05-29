@@ -21,6 +21,8 @@ vertx run src/main/java/MyWebServer.java -cluster
 
 [http://localhost:8080](http://localhost:8080)
 
+Note: I have this set to port 80 for running on as a public web server/app
+
 #### Terminal Window 4:
 vertx run myconsumer.rb -cluster
 

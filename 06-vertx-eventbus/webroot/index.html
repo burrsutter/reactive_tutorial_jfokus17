@@ -21,7 +21,8 @@
      <div id="dataFromServer" class="stuffFromServer"></div>
 
      <script>
-       var eb = new EventBus("http://vertx.burr.red/eventbus");
+       // note: modify this to your web app URL
+       var eb = new EventBus("http://web.burr.red/eventbus");
 
        eb.onopen = function () {
          console.log("onopen");

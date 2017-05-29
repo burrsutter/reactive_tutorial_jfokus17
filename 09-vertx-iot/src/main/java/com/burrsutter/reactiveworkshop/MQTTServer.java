@@ -40,7 +40,7 @@ public class MQTTServer extends AbstractVerticle {
             // System.out.println("[keep alive timeout = " + endpoint.keepAliveTimeSeconds() + "]");
 
             // accept connection from the remote client
-            endpoint.accept(false);
+            endpoint.accept(true);
 
             endpoint.publishHandler(message -> {
                 String msg = message.payload().toString(Charset.defaultCharset());

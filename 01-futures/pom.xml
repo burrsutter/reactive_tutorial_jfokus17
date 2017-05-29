@@ -15,9 +15,9 @@
     </modules>
     -->
     <properties>
-        <java.main.class>com.burrsutter.reactiveworkshop.MainFuture</java.main.class>
+        <!--<java.main.class>com.burrsutter.reactiveworkshop.MainFuture</java.main.class>-->
         <!--<java.main.class>com.burrsutter.reactiveworkshop.MainCompletableFuture</java.main.class>-->
-        <!--<java.main.class>com.burrsutter.reactiveworkshop.MainObservable</java.main.class>-->
+        <java.main.class>com.burrsutter.reactiveworkshop.MainObservable</java.main.class>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

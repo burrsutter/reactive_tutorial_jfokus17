@@ -13,24 +13,36 @@ import io.vertx.ext.web.handler.StaticHandler;
 public class MainVerticle extends AbstractVerticle {
 
     public void start() throws Exception {
-        System.out.println("Hello4");
+        System.out.println("Hello");
 
         Router router = Router.router(vertx);
 
+        router.get("/menu").handler(request -> {
+            request.response().end("Try \n/hello/yourname \n"
+                    + "/goodbye \n"
+                    + "/blowup \n"
+                    + new java.util.Date());
+        });
+
         router.get("/hello/:name").handler(request ->
-                request.response().end("Hey again " + request.pathParam("name") + " " + new java.util.Date())
+                request.response().end("Hey Dude " + request.pathParam("name") + " " + new java.util.Date())
         );
 
-        router.get("/goodbye").handler(request -> request.response().end("goodbye2"));
+        router.get("/goodbye").handler(request -> request.response().end("goodbye"));
 
         router.get("/blowup").handler(request -> {
             throw new RuntimeException("Damn It");
         });
 
-
+        // serves static files from resources/webroot
         router.route().handler(StaticHandler.create());
+
         router.route().failureHandler(ErrorHandler.create());
 
+        /*
+        Normally for local development you would use 8080
+        Here I am using 80 for running as a public webapp
+        */
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(8080);
