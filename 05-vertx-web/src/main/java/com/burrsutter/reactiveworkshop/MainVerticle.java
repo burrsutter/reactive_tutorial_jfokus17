@@ -17,7 +17,7 @@ public class MainVerticle extends AbstractVerticle {
 
         Router router = Router.router(vertx);
 
-        router.get("/menu").handler(request -> {
+        router.get("/").handler(request -> {
             request.response().end("Try \n/hello/yourname \n"
                     + "/goodbye \n"
                     + "/blowup \n"
@@ -25,7 +25,7 @@ public class MainVerticle extends AbstractVerticle {
         });
 
         router.get("/hello/:name").handler(request ->
-                request.response().end("Hey Dude " + request.pathParam("name") + " " + new java.util.Date())
+                request.response().end("Hello " + request.pathParam("name") + " " + new java.util.Date())
         );
 
         router.get("/goodbye").handler(request -> request.response().end("goodbye"));
@@ -35,7 +35,7 @@ public class MainVerticle extends AbstractVerticle {
         });
 
         // serves static files from resources/webroot
-        router.route().handler(StaticHandler.create());
+        // router.route().handler(StaticHandler.create());
 
         router.route().failureHandler(ErrorHandler.create());
 
@@ -45,7 +45,7 @@ public class MainVerticle extends AbstractVerticle {
         */
         vertx.createHttpServer()
                 .requestHandler(router::accept)
-                .listen(8080);
+                .listen(80);
 
 
   }

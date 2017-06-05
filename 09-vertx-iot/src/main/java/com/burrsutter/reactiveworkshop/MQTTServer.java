@@ -3,6 +3,9 @@ package com.burrsutter.reactiveworkshop;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mqtt.MqttServer;
+import io.vertx.core.shareddata.SharedData;
+import io.vertx.core.shareddata.LocalMap;
+
 
 import java.nio.charset.Charset;
 
@@ -17,6 +20,7 @@ public class MQTTServer extends AbstractVerticle {
 
     public void start() throws Exception {
         MqttServer mqttServer = MqttServer.create(vertx);
+        SharedData sd = vertx.sharedData();
 
         mqttServer.endpointHandler(endpoint -> {
 
@@ -44,11 +48,22 @@ public class MQTTServer extends AbstractVerticle {
 
             endpoint.publishHandler(message -> {
                 String msg = message.payload().toString(Charset.defaultCharset());
+                LocalMap<String,Integer> counter = sd.getLocalMap("MyMap1");
                 System.out.println("Received message @" + msg + "@ with QoS [" + message.qosLevel() + "]");
                 JsonObject msgAsJSON = new JsonObject(msg);
                 if (msgAsJSON.getString("sensorid").equals(TISENSOR2650)) {
+                    sd.getCounter(TISENSOR2650, ar -> {
+                        ar.result().addAndGet(1, ar2 -> {
+                            System.out.println(TISENSOR2650 + " " + ar2.result().intValue());
+                        });
+                    });
                     vertx.eventBus().publish(TISENSOR2650,msg);
                 } else if (msgAsJSON.getString("sensorid").equals(TISENSOR2541)) {
+                    sd.getCounter(TISENSOR2541, ar -> {
+                        ar.result().addAndGet(1, ar2 -> {
+                            System.out.println(TISENSOR2541 + " " + ar2.result().intValue());
+                        });
+                    });
                     vertx.eventBus().publish(TISENSOR2541,msg);
                 } else if (msgAsJSON.getString("sensorid").equals(LBBSENSOR)) {
                     vertx.eventBus().publish(LBBSENSOR,msg);
