@@ -11,10 +11,16 @@ import io.vertx.rxjava.ext.web.RoutingContext;
  */
 public class FollowersVerticle extends AbstractVerticle {
     public void start() throws Exception {
-        System.out.println("\n**FollowersVerticle start**\n");
+
         Router router = Router.router(vertx);
         router.get("/followers/:login").handler(this::getFollowers);
-        vertx.createHttpServer().requestHandler(router::accept).listen(8082);
+        vertx.createHttpServer().requestHandler(router::accept).listen(8082, ar -> {
+            if(ar.succeeded()) {
+                System.out.println("\n** FollowersVerticle started on 8082 ** \n");
+            } else {
+                System.out.println("Error: " + ar.cause());
+            }
+        });
     }
     public void getFollowers(RoutingContext rc) {
         HttpServerResponse response = rc.response();

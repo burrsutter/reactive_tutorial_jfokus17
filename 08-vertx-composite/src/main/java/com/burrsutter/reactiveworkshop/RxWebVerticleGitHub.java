@@ -27,7 +27,14 @@ public class RxWebVerticleGitHub extends AbstractVerticle {
         Router router = Router.router(vertx);
         router.get("/").handler(this::getStuff);
 
-        vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+        vertx.createHttpServer().requestHandler(router::accept).listen(8080, ar -> {
+            if(ar.succeeded()) {
+                System.out.println("\n ** Main HTTP Server up on 8080 **\n");
+            } else {
+                System.out.println("Error: " + ar.cause());
+            }
+        });
+
 
     }
 
@@ -35,10 +42,10 @@ public class RxWebVerticleGitHub extends AbstractVerticle {
         HttpServerResponse response = routingContext.response();
         response.setChunked(true);
         /*
-            hits the /users URI on localhost:8081
+            hits the /users URI on api.github.com:443
             that results a JSON array of users
             then fetch user's details
-            and fetch user's followers on localhost:8082 /followers/:loginid
+            and fetch user's followers on api.github.com/followers/:loginid
 
         */
         rxWebClient.get(443, "api.github.com", "/users")

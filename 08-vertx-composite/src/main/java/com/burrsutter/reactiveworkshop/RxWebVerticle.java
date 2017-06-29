@@ -26,7 +26,13 @@ public class RxWebVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
         router.get("/").handler(this::getStuff);
 
-        vertx.createHttpServer().requestHandler(router::accept).listen(8080);
+        vertx.createHttpServer().requestHandler(router::accept).listen(8080, ar -> {
+            if(ar.succeeded()) {
+                System.out.println("\n ** Main HTTP Server up on 8080 **\n");
+            } else {
+                System.out.println("Error: " + ar.cause());
+            }
+        });
 
     }
 

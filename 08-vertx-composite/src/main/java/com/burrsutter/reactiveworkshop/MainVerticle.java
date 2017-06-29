@@ -9,13 +9,22 @@ public class MainVerticle extends AbstractVerticle{
     public void start() throws Exception {
         UsersVerticle users = new UsersVerticle();
         FollowersVerticle followers = new FollowersVerticle();
-        // RxWebVerticle web = new RxWebVerticle();
-        RxWebVerticleGitHub web = new RxWebVerticleGitHub();
+
+        // these next two options go after the localhost users and followers endpoints
         // ClientVerticle client = new ClientVerticle();
         // RxWebClient client = new RxWebClient();
-        vertx.deployVerticle(users, webresult -> {
-            vertx.deployVerticle(followers, userresult -> {
-                vertx.deployVerticle(web);
+
+
+        // this option goes to localhost, hit localhost:8080 with your browser
+        RxWebVerticle client = new RxWebVerticle();
+
+        // this option goes to github, hit localhost:8080 with your browser
+        // RxWebVerticleGitHub client = new RxWebVerticleGitHub();
+
+
+        vertx.deployVerticle(users, x -> {
+            vertx.deployVerticle(followers, y -> {
+                vertx.deployVerticle(client);
             });
         });
     }

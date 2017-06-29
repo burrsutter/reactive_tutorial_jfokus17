@@ -28,22 +28,23 @@ public class ClientVerticle extends AbstractVerticle {
                 int users_size = users.size();
                 for (int i = 0; i < users_size; i++) {
                     JsonObject user = users.getJsonObject(i);
-                    System.out.print(user.getString("login") + " : ");
                     String followers_url = user.getString("followers_url");
+                    String userId = user.getString("login");
+                    System.out.print(userId + " : ");
                     System.out.println(followers_url);
                     client.get(followers_url, follower_response -> {
                         follower_response.bodyHandler( follower_body -> {
-                            System.out.println(follower_body.toString());
+                            // System.out.println(follower_body.toString());
                             JsonArray followers = follower_body.toJsonArray();
                             int followers_size = followers.size();
                             for (int fi = 0; fi < followers_size; fi++) {
                                 JsonObject follower = followers.getJsonObject(fi);
 
                                 String specific_user_url = HOST + "/users/" + follower.getString("login");
-                                System.out.println("**" + specific_user_url + "**");
+                                // System.out.println("**" + specific_user_url + "**");
                                 client.get(specific_user_url, user_response -> {
                                     user_response.bodyHandler( user_body -> {
-                                        System.out.println("User: " + user_body.toJsonObject().getString("name"));
+                                        System.out.println("user: " + userId + " has follower: " + user_body.toJsonObject().getString("name"));
                                     });
                                 }).setTimeout(2000)
                                         .putHeader("Content-Type", "application/json")

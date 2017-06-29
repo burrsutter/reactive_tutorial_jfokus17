@@ -17,8 +17,15 @@ public class UsersVerticle extends AbstractVerticle{
         router.get("/").handler(this::getRoot);
         router.get("/users/:login").handler(this::getUser);
         router.get("/users/:login/followers").handler(this::getFollowers);
-        vertx.createHttpServer().requestHandler(router::accept).listen(8081);
-    }
+
+        vertx.createHttpServer().requestHandler(router::accept).listen(8081, ar -> {
+            if (ar.succeeded()) {
+                System.out.println("\n** UsersVerticle started on 8081 ** \n");
+            } else {
+                System.out.println("Error: " + ar.cause());
+            }
+        });
+    } // start
 
     private void getFollowers(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();

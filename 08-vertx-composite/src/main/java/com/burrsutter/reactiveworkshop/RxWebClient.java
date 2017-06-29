@@ -43,6 +43,7 @@ public class RxWebClient extends AbstractVerticle {
                 .rxSend()
                 .map(HttpResponse::body).flatMapObservable(Observable::from).cast(JsonObject.class)
                 .flatMap(user -> {
+
                     Single<JsonObject> userDetails = createlocalhostRequest("/users/" + user.getString("login"), BodyCodec.jsonObject())
                             .rxSend()
                             .map(HttpResponse::body);
