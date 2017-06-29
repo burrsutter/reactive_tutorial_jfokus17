@@ -30,26 +30,20 @@ class MyFunction2 implements Function<String, String> {
     }
 } // MyFunction2
 
-class MyFunction3 implements Function<String, String> {
-    @Override
-    public String apply(String s) {
-//       System.out.println("MyFunction3");
-       return s + " Item4";
-    }
-} // MyFunction2
 
 
 public class MainCompletableFuture {
   public static void main (String args[]) throws Exception {
       ExecutorService exec = Executors.newSingleThreadExecutor();      
       CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(new MySupplier(), exec);
-      
+      System.out.println("cf1: " + cf1.get());
+
       CompletableFuture<String> cf2 = cf1.thenApply(new MyFunction1());
+      System.out.println("cf2: " + cf2.get());
       
       CompletableFuture<String> cf3 = cf2.thenApply(new MyFunction2());
-
-      // CompletableFuture<String> cf4 = cf3.thenApply(new MyFunction3());
-
       System.out.println("cf3: " + cf3.get());
+
+
   }
 }

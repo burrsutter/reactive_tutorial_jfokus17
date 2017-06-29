@@ -21,7 +21,7 @@ public class Hello03 {
             "Aloha",
             "Howdy",
             "Wassup",
-            // "Hallo",  // just only supports up to 10 parameters
+            //"Hallo",  // just only supports up to 10 parameters
             "Ciao").subscribe(System.out::println);
 
             

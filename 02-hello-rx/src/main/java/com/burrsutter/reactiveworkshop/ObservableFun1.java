@@ -13,6 +13,9 @@ public class ObservableFun1 {
                 .map(s -> s.substring(3)) // "45"
                 .map(i -> new Integer(i)) // 45
                 .map(a -> a * 2) // 90
-                .subscribe(x -> System.out.println(x)); // 90
+                .subscribe(x -> {
+                    System.out.println(x);
+                    System.out.println(x.getClass().getName());
+                }); // 90
     }
 }

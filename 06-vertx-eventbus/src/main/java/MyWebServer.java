@@ -13,8 +13,8 @@ public class MyWebServer extends AbstractVerticle {
     Router router = Router.router(vertx);
     
     BridgeOptions options = new BridgeOptions().addOutboundPermitted(new PermittedOptions().setAddress("my-feed"));
+
     router.route("/eventbus/*").handler(SockJSHandler.create(vertx).bridge(options, event -> {
-      
       if (event.type() == BridgeEventType.SOCKET_CREATED) {
         System.out.println("A socket was created");
       }

@@ -41,5 +41,6 @@ public class BWarmups {
               .filter(symbol -> symbol.startsWith("B"))
               .forEach(System.out::println);
 
+        System.out.println("\nComma separated string: " + greetings.stream().collect(Collectors.joining(", ")));
     } // main
 }

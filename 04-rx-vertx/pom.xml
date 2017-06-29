@@ -13,7 +13,7 @@
          requires a new profile in settings.xml
          https://gist.github.com/vietj/16eba4e07dc5eaebaf30c716400a8201
         -->
-        <vertx-stack.version>3.4.0-SNAPSHOT</vertx-stack.version>
+        <vertx-stack.version>3.4.1</vertx-stack.version>
         <fabric8.vertx.plugin.version>1.0.2</fabric8.vertx.plugin.version>
         <vertx.verticle>com.burrsutter.reactiveworkshop.NewRxWebClient</vertx.verticle>
         <maven.compiler.source>1.8</maven.compiler.source>

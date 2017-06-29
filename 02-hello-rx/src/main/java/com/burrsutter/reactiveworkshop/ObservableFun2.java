@@ -19,7 +19,7 @@ public class ObservableFun2 {
                 .doOnNext(System.out::println)
                 .map(s -> s + " Burr") 
                 .doOnNext(System.out::println)
-                .map(s -> s.hashCode())
+                .map(String::hashCode)
                 .doOnNext(x -> System.out.println(x.getClass().getSimpleName()))
                 .doOnNext(System.out::println)                
                 .map(i -> Integer.toString(i))

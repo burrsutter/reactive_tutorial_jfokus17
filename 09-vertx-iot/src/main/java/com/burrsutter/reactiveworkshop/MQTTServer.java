@@ -61,7 +61,7 @@ public class MQTTServer extends AbstractVerticle {
                 } else if (msgAsJSON.getString("sensorid").equals(TISENSOR2541)) {
                     sd.getCounter(TISENSOR2541, ar -> {
                         ar.result().addAndGet(1, ar2 -> {
-                            System.out.println(TISENSOR2541 + " " + ar2.result().intValue());
+                            System.out.println(TISENSOR2541  + " " + ar2.result().intValue());
                         });
                     });
                     vertx.eventBus().publish(TISENSOR2541,msg);
