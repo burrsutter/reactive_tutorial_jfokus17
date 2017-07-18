@@ -3,6 +3,7 @@
       <title>Browser Vert.x Event Bus</title>
       <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
       <script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+
       <script src="vertx-eventbus.js"></script>
       
   </head>
@@ -13,7 +14,7 @@
        }
      </style>
 
-     <H1>Wassup!</H1>
+     <H1>Aloha</H1>
       
      <div class="stuffFromServer">Messages from Server</div>
      <br>
@@ -22,14 +23,24 @@
 
      <script>
        // note: modify this to your web app URL
-       var eb = new EventBus("http://web.burr.red/eventbus");
+       // var eb = new EventBus("http://web.burr.red/eventbus");
+       var eb = new EventBus("/eventbus");
 
        eb.onopen = function () {
          console.log("onopen");
          eb.registerHandler("my-feed", function (err, msg) {         
-         $('#dataFromServer').prepend(msg.body + "</br>");
-       });
-      }
+            $('#dataFromServer').prepend(msg.body + "</br>");
+            console.log(msg.body);
+
+            if(msg.body.startsWith("Web")) {
+                document.bgColor='white';
+            } else if (msg.body.startsWith("Java")) {
+                document.bgColor='yellow';
+            } else if (msg.body.startsWith("Ruby")) {
+                document.bgColor='red';
+            }
+       }); // eb.registerHandler
+      } // eb.open
 
      </script>
 

@@ -20,8 +20,6 @@ public class Observable3Streams {
                     return f + h + b;
                 });
 
-
-
         combinedStream.subscribe(
                 System.out::println,
                 Throwable::printStackTrace,

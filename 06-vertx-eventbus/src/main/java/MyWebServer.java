@@ -28,11 +28,11 @@ public class MyWebServer extends AbstractVerticle {
     vertx.createHttpServer()        
         .requestHandler(router::accept)
         // modified this to 80 for running as public web app
-        .listen(80);
+        .listen(8080);
 
-    System.out.println("Everyting is non-blocking Async :-)");
+    System.out.println("Everything is non-blocking Async :-)");
 
-    vertx.setPeriodic(1000, t -> vertx.eventBus().publish("my-feed", "Server Now " + new java.util.Date()));
+    vertx.setPeriodic(1300, t -> vertx.eventBus().publish("my-feed", "Web Server Now " + new java.util.Date()));
 
   } // start
 }
