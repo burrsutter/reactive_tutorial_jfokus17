@@ -16,10 +16,10 @@ public class MainVerticle extends AbstractVerticle{
 
 
         // this option goes to localhost, hit localhost:8080 with your browser
-        RxWebVerticle client = new RxWebVerticle();
+        // RxWebVerticle client = new RxWebVerticle();
 
         // this option goes to github, hit localhost:8080 with your browser
-        // RxWebVerticleGitHub client = new RxWebVerticleGitHub();
+        RxWebVerticleGitHub client = new RxWebVerticleGitHub();
 
 
         vertx.deployVerticle(users, x -> {

@@ -1,3 +1,6 @@
+# Starting the service
+mvn vertx:run
+
 # Vertx as a MQTT Service
 Clients are Node.js running on Intel Edison's connected via Bluetooth
 to TI SensorTag and LightBlue Bean

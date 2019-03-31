@@ -14,7 +14,12 @@
        }
      </style>      
 
-  	    <div id="container">
+<audio id="myAudio">
+  <source src="horse.ogg" type="audio/ogg">
+  <source src="horse.mp3" type="audio/mpeg">
+</audio>
+
+  	  <div id="container">
 		   <canvas id="mainCanvas" width="400" height="400"
 		    style="border: 2px solid rgb(84,84,84); cursor: pointer; background-color: rgb(255,255,255); background-position: initial initial; background-repeat: initial initial;">
 	   </div>
@@ -34,12 +39,7 @@
        var eb = null;
        var ebAddress = "paintAddressX";
        var myUUID = null;
-       // the URL will change based on where the Vert.x server lives
-       // ideally I would have a better config option
-       // laziness
-       // var url = "http://192.168.1.5:8080/eventbus";
-	   var url = "http://web.burr.red/eventbus";
-       // var url = "http://localhost:8080/eventbus";
+			 var url = "/eventbus";
 
        var strokeColor = "#000000";
        var isDrawing = false;
@@ -49,14 +49,58 @@
        $('#clearButton').click(function(e) {
 		     e.preventDefault();
 		     console.log("Clear Clicked");
-         ctx.beginPath();
+				 blankCanvas();
+		     sendCanvas();
+	     }); // clearButton
+	
+			 function blankCanvas() {
+				 ctx.beginPath();
 		     ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
          ctx.fillStyle = "#FFFFFF";
          ctx.fillRect( 0, 0, mainCanvas.width, mainCanvas.height );
          ctx.closePath();
-		     sendCanvas();
-	     }); // clearButton
-	
+			 }
+
+			 
+			function drawSmile() {
+    // logic from 
+    // http://curran.github.io/HTML5Examples/canvas/smileyFace.html
+    var context = mainCanvas.getContext('2d');
+    var centerX = mainCanvas.width / 2;
+    var centerY = mainCanvas.height / 2;
+    var radius = 50;
+    var eyeRadius = 6;
+    var eyeXOffset = 20;
+    var eyeYOffset = 20;
+  
+    // draw the yellow circle
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    context.fillStyle = 'yellow';
+    context.fill();
+    context.lineWidth = 5;
+    context.strokeStyle = 'black';
+    context.stroke();
+    
+    // draw the eyes
+    context.beginPath();
+    var eyeX = centerX - eyeXOffset;
+    var eyeY = centerY - eyeXOffset;
+    context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
+    var eyeX = centerX + eyeXOffset;
+    context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
+    context.fillStyle = 'black';
+    context.fill();
+  
+    // draw the mouth
+    context.beginPath();
+    context.arc(centerX, centerY, 25, 0, Math.PI, false);
+    context.stroke();    
+
+  } // drawSmile
+
+
+
        $('#blackButton').click(function(e) {
 		     e.preventDefault();
 		     console.log("Black Clicked");
@@ -131,6 +175,8 @@
 	
 		  publish(ebAddress, msgAsString);		
 	}
+
+
 	
 	function getX(event) {
 		if(!event.targetTouches || typeof event.targetTouches[0] === "undefined") {
@@ -174,6 +220,20 @@
           eb.onopen = function() {
 		        myUUID = makeUUID();
             console.log("Connected " + myUUID);
+
+						eb.registerHandler("serverpush", function (err, msg) {
+      				 var uuidfromserver = msg.body;
+							 // console.log("from server: " + uuidfromserver);
+							 if(uuidfromserver == myUUID) {
+								 blankCanvas();
+								 drawSmile();
+								 // play sound
+								 var sound = document.getElementById("myAudio"); 
+								 sound.play();
+								 
+							 }
+    				});
+						
           }; // onopen
 
           eb.onclose = function() {

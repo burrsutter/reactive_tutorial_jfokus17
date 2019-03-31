@@ -13,9 +13,7 @@
 
 <script>
   var busAddress = "paintAddressX";
-  // var url = "http://192.168.1.5:8080/eventbus";
-  var url = "http://web.burr.red/eventbus";
-  // var url = "http://localhost:8080/eventbus";
+  var url = "/eventbus";
   var canvi = {}; // the "array" of Canvas objects, one per unique message.id (sent by the client)
   var eb = new EventBus(url);
 
@@ -25,13 +23,21 @@
         // console.log(msg);      
         var message = JSON.parse(msg.body);
 	      console.log("Message ID: " + message.id);
-		    console.log("Message Data: " + message.data);	
+		    // console.log("Message Data: " + message.data);	
 		    // first see if a canvas alreddy exists, if not create one
 		    theCanvas = findAddCanvas(message.id);
 		    deserialize(message.data, theCanvas );
+
+        // send the user a smile
+        theCanvas.addEventListener('click', function() {             
+              console.log(this.id);
+              prompt("Smile", this.id);
+              drawSmile(document.getElementById(this.id));
+              
+         }, true);
+
      });
   }  // subscribe
-
   function findAddCanvas(id) {
 	  if (canvi.hasOwnProperty(id)) {
 	    console.log("FOUND Canvas for " + id);
@@ -65,6 +71,43 @@
     };
     img.src = data;
   } // deserialize
+
+  function drawSmile(aCanvas) {
+    // logic from 
+    // http://curran.github.io/HTML5Examples/canvas/smileyFace.html
+    var context = aCanvas.getContext('2d');
+    var centerX = aCanvas.width / 2;
+    var centerY = aCanvas.height / 2;
+    var radius = 50;
+    var eyeRadius = 6;
+    var eyeXOffset = 20;
+    var eyeYOffset = 20;
+  
+    // draw the yellow circle
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    context.fillStyle = 'yellow';
+    context.fill();
+    context.lineWidth = 5;
+    context.strokeStyle = 'black';
+    context.stroke();
+    
+    // draw the eyes
+    context.beginPath();
+    var eyeX = centerX - eyeXOffset;
+    var eyeY = centerY - eyeXOffset;
+    context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
+    var eyeX = centerX + eyeXOffset;
+    context.arc(eyeX, eyeY, eyeRadius, 0, 2 * Math.PI, false);
+    context.fillStyle = 'black';
+    context.fill();
+  
+    // draw the mouth
+    context.beginPath();
+    context.arc(centerX, centerY, 25, 0, Math.PI, false);
+    context.stroke();    
+
+  } // drawSmile
 
   function closeConn() {
     if (eb) {

@@ -44,7 +44,7 @@ public class RxWebVerticleGitHub extends AbstractVerticle {
         /*
             hits the /users URI on api.github.com:443
             that results a JSON array of users
-            then fetch user's details
+         ls   then fetch user's details
             and fetch user's followers on api.github.com/followers/:loginid
 
         */
